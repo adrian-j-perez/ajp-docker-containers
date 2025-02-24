@@ -1,0 +1,33 @@
+
+# Note: the Mealie apo by default uses the SQLite database but you make use PostgreSQL
+# https://docs.mealie.io/documentation/getting-started/installation/installation-checklist/
+
+services:
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:latest    # Specifies the Mealie Docker image and version. If app seems bug go down a version
+    container_name: mealie                         # Names the container for easier management.
+    restart: always                                # Ensures the container restarts automatically unless stopped.
+    ports:
+      - "9000:9000"                                # open port 9000 on the host 
+    deploy:
+      resources:
+        limits:
+          memory: 600M                             # Limits maximum of 600M of memory. 1000M is the go to
+    volumes:
+      - ./mealie-data:/app/data/                   # I like to have the data in the same folder.
+    environment:
+    # https://docs.mealie.io/documentation/getting-started/installation/backend-config/
+      - ALLOW_SIGNUP=true                          # Allows new user signups on the Mealie instance.
+      - PUID=1001                                  # Sets the user ID for the container - docker user.
+      - PGID=1001                                  # Sets the group ID for the container. docker group
+      - TZ=America/Chicago                         # Sets the timezone for the container.
+      - MAX_WORKERS=1                              # Limits the number of workers to 1.
+      - WEB_CONCURRENCY=1                          # Sets the concurrency level for web workers.
+      - BASE_URL=<domain name or ip address>       # The base URL where Mealie is accessed. Thise is used for notification???
+      - API_DOCS=True                              # API documentation locally
+      - DAILY_SCHEDULE_TIME=22:00                  # The time of day to run daily server tasks, in HH:MM format
+      - API_PORT=9000
+      - SECURITY_MAX_LOGIN_ATTEMPTS=5              #  times a user can provide an invalid password before their account is locked
+      - SECURITY_USER_LOCKOUT_TIME=1               # Time in hours for how long a users account is locked
+
+
