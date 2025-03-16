@@ -1,0 +1,20 @@
+# compose version not needed anymore
+services:
+  firefox:
+    image: lscr.io/linuxserver/firefox:latest
+    container_name: firefox # make sure this will be named as...
+    ports:
+      - 3000:3000 # http - access firefox web portal 
+      - 3001:3001 # https
+    security_opt:
+      - seccomp:unconfined # optional
+    environment:
+      - PUID=1001 # docker user
+      - PGID=1001 # docker grp
+      - TZ=America/Chicago
+      - FIREFOX_CLI=https://www.linuxserver.io/ # optional
+    volumes:
+      - ./config:/config # I like to put config data in same folder
+    shm_size: "1gb" # shared-memory-for-firefox-docker
+    restart: unless-stopped
+    
