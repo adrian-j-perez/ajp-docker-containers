@@ -1,0 +1,15 @@
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    ports:
+      - 8000:8000 # port 8000 to connect with docker 
+      - 9443:9443 # https - optional - as ssl needs setup
+      - 9000:9000 # http
+    volumes:
+      - ./data:/data # save data in same folder
+      - /var/run/docker.sock:/var/run/docker.sock # connect to local docker 
+    restart: unless-stopped
+
+
+
