@@ -1,0 +1,23 @@
+# https://jellyfin.org/docs/general/installation/container/
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:10.10.3 # keeping at this version, now a new 10.11.x with major changes 
+    container_name: jellyfin
+    user: 1001:1002 # user:group
+    environment:
+      - TZ=America/Chicago
+    network_mode: 'host' # NOTE: this bind directly to the host ip and uses that same post
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - type: bind
+        source: /media/media1
+        target: /media1
+      - type: bind
+        source: /media/media2
+        target: /media2
+    # Note newtwork is on host so, no need to publish ports
+    ports:
+      - "8096:8096"
+    restart: 'unless-stopped'
