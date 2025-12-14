@@ -1,16 +1,16 @@
-## Note: This docker-compose file will only set up pi-hole to handle dns requests ##
-# it does not handle DCHP, NTP and other system server prmission - look at the links below.
-# Lastly, you will need to point your devices to send dns requests to the server ip address
-# I recommend to update your routers dns ip and chagne it to the appropriate ip.  
+## NOTE: This is pihone version 5 is outdate 
 
 # More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
 # https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+
+# !!! VERSIONS SINCE 2025.02.0 CONTAIN BREAKING CHANGES IF UPGRADING FROM 2024.07.0 OR OLDER
+# https://hub.docker.com/r/pihole/pihole
 
 services:
   pihole:
     hostname: pihole # added this show it does not show long hex string in web UI
     container_name: pihole
-    image: pihole/pihole:latest
+    image: pihole/pihole:2024.07.0
     ports:
       - "53:53/tcp" # DNS
       - "53:53/udp"
