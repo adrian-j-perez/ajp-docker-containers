@@ -1,0 +1,19 @@
+# https://github.com/alexta69/metube
+# https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md
+# there is more config that can be done..
+
+services:
+  metube:
+    image: ghcr.io/alexta69/metube
+    container_name: metube
+    user: "1001:1002" # user and group
+    environment:
+      LOGLEVEL: INFO
+    # had to put dns ...
+    dns:
+      - 1.1.1.1
+    restart: unless-stopped
+    ports:
+      - "8089:8081"
+    volumes:
+      - /media/mediafile/youtube:/downloads
