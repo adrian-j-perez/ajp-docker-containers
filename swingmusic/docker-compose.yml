@@ -1,0 +1,14 @@
+# https://github.com/swingmx/swingmusic
+# https://swingmx.com/
+# There is also a mobile app
+
+services:
+  swingmusic:
+    image: ghcr.io/swingmx/swingmusic:latest
+    container_name: swingmx
+    volumes:
+      - /media/mediafile/music:/music
+      - ./config:/config
+    ports:
+      - "1970:1970"
+    restart: unless-stopped
