@@ -1,0 +1,42 @@
+
+# More info:
+# https://hub.docker.com/r/pihole/pihole
+# https://docs.pi-hole.net/docker/
+# https://github.com/pi-hole/pi-hole
+# https://github.com/pi-hole/docker-pi-hole
+
+# pi-hole v6 did a major update and had to redo the compose file - 6/29/2025
+
+services:
+  pihole:
+    hostname: pihole
+    container_name: pihole
+    image: pihole/pihole:latest
+    network_mode: 'host'
+    # ports not needed in host mode
+    #ports:
+      #- "53:53/tcp"
+      #- "53:53/udp"
+      #- "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
+      #- "8181:80/tcp" # the web UI https
+      #- "8443:443/tcp" # https web
+    environment:
+      TZ: 'America/Chicago'
+      FTLCONF_webserver_api_password: 'changeme' # 'set a secure password here or it will be random'
+      FTLCONF_dns_listeningMode: 'all'
+      FTLCONF_webserver_port: '8181' # change default pihole web port due to host mode
+      FTLCONF_dchp_active: 'true'
+    
+    volumes:
+    # Volumes store your data between container upgrades
+      - './etc-pihole:/etc/pihole'
+
+    cap_add:
+    # https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+      # Optional, if Pi-hole should get some more processing time
+      - SYS_NICE
+      # Required if you are using Pi-hole as your DHCP server, else not needed
+      - NET_ADMIN
+
+    restart: unless-stopped
+
