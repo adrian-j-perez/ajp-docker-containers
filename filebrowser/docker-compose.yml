@@ -1,0 +1,22 @@
+# https://filebrowser.org/installation.html#s6-overlay-image
+# website does not provide a compose file
+# https://github.com/filebrowser/filebrowser
+
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:s6
+    container_name: filebrowser
+    restart: unless-stopped
+    ports:
+      - "8182:80" # change from "8080:80"
+    environment:
+      # Automatically gets the current host user's ID for correct permissions
+      PUID: 1001 # user
+      PGID: 1002 # group
+    volumes:
+      # Main data directory to manage via FileBrowser (replace with your actual path)
+      - /media/mediafiles:/srv
+      # Database file location (replace with your actual path)
+      - ./database:/database
+      # Configuration files location (replace with your actual path)
+      - ./config:/config
