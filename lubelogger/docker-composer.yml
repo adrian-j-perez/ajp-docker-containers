@@ -1,0 +1,16 @@
+# https://lubelogger.com/
+# https://github.com/hargata/lubelog
+# https://github.com/hargata/lubelog/blob/main/docker-compose.yml
+# auto-vehicle maintenance tracker
+
+services:
+  app:
+    image: ghcr.io/hargata/lubelogger:latest
+    restart: unless-stopped
+    # volumes data persistent in same dir
+    volumes:
+      - ./data:/App/data
+      - ./keys:/root/.aspnet/DataProtection-Keys
+    # change port if desired
+    ports:
+      - 3333:8080
