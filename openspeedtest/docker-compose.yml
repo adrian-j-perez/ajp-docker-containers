@@ -1,0 +1,14 @@
+
+# https://github.com/openspeedtest/Speed-Test?tab=readme-ov-file
+# take a look at the readme file in openspeedtest repo to leran more about config and urls configs
+# https://hub.docker.com/r/openspeedtest/latest
+
+services:
+    speedtest:
+      image: openspeedtest/latest        
+      restart: unless-stopped
+      container_name: openspeedtest     
+      ports:
+        - '3080:3000' # http - changing the defalut port of 3000
+      #  - '3001:3001' # https
+        
