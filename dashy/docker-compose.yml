@@ -1,0 +1,27 @@
+# https://github.com/Lissy93/dashy/blob/master/docker-compose.yml
+# https://dashy.to/docs/deployment#using-docker-compose
+
+services:
+  dashy:
+    image: lissy93/dashy
+    container_name: Dashy
+    # Pass in your config file below, by specifying the path on your host machine
+    volumes:
+      # pull from local dir
+      - ./user-data/my-conf.yml:/app/user-data/conf.yml
+    ports:
+      - 8046:8080 # set random port
+    # Set any environmental variables
+    environment:
+      - NODE_ENV=production
+    # optional: Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
+      #- UID=1001 # docker
+      #- GID=1002 # media-vault
+    restart: unless-stopped
+    # Configure healthchecks
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
