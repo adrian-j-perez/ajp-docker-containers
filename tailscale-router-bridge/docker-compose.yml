@@ -1,0 +1,29 @@
+# This acts at a network bridge - dns traffic can flow to the local network dns and respond to requests 
+
+
+services:
+  tailscale:
+    image: tailscale/tailscale:latest
+    hostname: ts-docker
+    network_mode: 'host' # bind directly to the host ip and port Note: this can be optional
+    container_name: ts
+    environment:
+      - TS_AUTHKEY=tskey-auth-xxxxxxxxxxxx
+      - TS_AUTH_ONCE=True # disable the key expiry in admin panel - should not re auth again
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+      - TS_ROUTES=10.0.0.0/24 # allow tailscale to access subnet
+      - TS_ACCEPT_DNS=flase # stop this service getting config info on dns from tailscalle server
+        # I have config in the admin panel to point traffic to this tailscale, so dns requests will come in.
+        # Since I have a local DNS setup the server will point to that and filter traffic acordly
+    volumes:
+      - ./ts/state:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: unless-stopped
+
+
